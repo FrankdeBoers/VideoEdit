@@ -101,8 +101,9 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
     private void cutVideo(String path, int cropWidth, int cropHeight, int x, int y) {
         showProgressDialog();
         String outPut = getDestPath(videoBean.src_path);
-        int duration = (startT - endT) / 1000;
+        int duration = (endT - startT) / 1000;
         int startTime = startT / 1000;
+        Log.d(TAG, "startTime:" + startTime + " duration " +duration);
         VideoCutHelper.getInstance().cropVideo(this,
                 path, outPut,
                 startTime, duration,
