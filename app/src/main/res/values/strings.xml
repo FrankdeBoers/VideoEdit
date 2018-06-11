@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">VideoEditGHC</string>
+    <string name="video_edit_segment">设置想要截取的片段</string>
+</resources>
