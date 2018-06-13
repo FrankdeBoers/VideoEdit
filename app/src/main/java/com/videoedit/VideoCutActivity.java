@@ -1,5 +1,6 @@
 package com.videoedit;
 
+import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
@@ -15,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.videoedit.bean.VideoBean;
+import com.videoedit.util.PermissionsActivity;
+import com.videoedit.util.PermissionsChecker;
 import com.videoedit.util.VideoCutHelper;
 import com.videoedit.view.CutView;
 import com.videoedit.view.DurView;
@@ -30,6 +33,14 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
 
     private static final String TAG = "VideoCutActivity";
     private static final int CODE_REQUEST_VIDEO = 1000;
+
+    private PermissionsChecker mPermissionsChecker; // 权限检测器
+    private static final int REQUEST_CODE = 0; // 请求码
+
+    // 所需的全部权限
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     private MyVideoView vv_play;
     private String path;
@@ -82,9 +93,7 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
         dp50 = (int) getResources().getDimension(R.dimen.dp50);
 
         initUI();
-
-        Intent intent = getIntent();
-
+        initPermission();
     }
 
     private void initUI() {
@@ -100,6 +109,15 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
 
         rel_open_gallery = (RelativeLayout) findViewById(R.id.rel_open_gallery);
         rel_open_gallery.setOnClickListener(this);
+    }
+
+    private void initPermission() {
+        mPermissionsChecker = new PermissionsChecker(this);
+
+        // 缺少权限时, 进入权限配置页面
+        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+            startPermissionsActivity();
+        }
     }
 
     /**
@@ -230,6 +248,10 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
             rl_finish.setVisibility(View.VISIBLE);
         }
 
+        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+            finish();
+        }
+
     }
 
     /*
@@ -293,4 +315,9 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
         startT = startTime;
         endT = endTime;
     }
+
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
+    }
+
 }
