@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.videoedit.bean.VideoBean;
@@ -22,7 +22,7 @@ import com.videoedit.view.MyVideoView;
 
 /**
  * Created by frank on 18/3/21.
- *
+ * <p>
  * 视频尺寸裁剪、时长裁剪
  */
 
@@ -42,6 +42,8 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
     private VideoBean videoBean;
     private DurView mCutView;
     private int startT, endT;
+
+    private RelativeLayout rel_open_gallery;
 
     /**
      * 获取本地视频信息
@@ -87,15 +89,18 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
 
         vv_play = (MyVideoView) findViewById(R.id.vv_play);
         cv_video = (CutView) findViewById(R.id.cv_video);
-        ImageView open_gallery = (ImageView) findViewById(R.id.open_gallery);
+        TextView open_gallery = (TextView) findViewById(R.id.open_gallery);
         TextView rl_finish = (TextView) findViewById(R.id.rl_finish);
         mCutView = (DurView) findViewById(R.id.cut_view);
         mCutView.setRangeChangeListener(this);
         open_gallery.setOnClickListener(this);
         rl_finish.setOnClickListener(this);
+
+        rel_open_gallery = (RelativeLayout) findViewById(R.id.rel_open_gallery);
+        rel_open_gallery.setOnClickListener(this);
     }
 
-        /**
+    /**
      * 裁剪视频大小
      */
     private void cutVideo(String path, int cropWidth, int cropHeight, int x, int y) {
@@ -103,7 +108,7 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
         String outPut = getDestPath(videoBean.src_path);
         int duration = (endT - startT) / 1000;
         int startTime = startT / 1000;
-        Log.d(TAG, "startTime:" + startTime + " duration " +duration);
+        Log.d(TAG, "startTime:" + startTime + " duration " + duration);
         VideoCutHelper.getInstance().cropVideo(this,
                 path, outPut,
                 startTime, duration,
@@ -211,6 +216,8 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
                 }
             });
             mCutView.setMediaFileInfo(videoBean);
+
+            rel_open_gallery.setVisibility(View.GONE);
         }
     }
 
@@ -253,6 +260,10 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.rl_finish:
                 editVideo();
+                break;
+
+            case R.id.rel_open_gallery:
+                openVideo();
                 break;
 
             default:

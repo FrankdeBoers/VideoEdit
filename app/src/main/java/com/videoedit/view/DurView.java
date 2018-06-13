@@ -137,6 +137,8 @@ public class DurView extends RelativeLayout implements TimeSliderView.OnRangeCha
     }
 
     public void setMediaFileInfo(VideoBean videoInfo) {
+        // 每次获取缩略图前，清除上一次生成的缩略图
+        mAdapter.recycleAllBitmap();
         if (videoInfo == null) {
             return;
         }

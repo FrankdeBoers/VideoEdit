@@ -2,40 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="@color/gray"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50"
-        android:background="#dd2B2B2B">
+        android:background="@color/gray">
 
-        <ImageView
+        <TextView
             android:id="@+id/open_gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@mipmap/ic_action_open" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp20"
+            android:text="打开"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/rl_finish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="13dp"
-            android:paddingRight="13dp"
-            android:paddingTop="5dp"
+            android:paddingRight="@dimen/dp20"
             android:text="完成"
-            android:textColor="#fff"
-            android:textSize="14sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rel_video_and_cutview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_title">
@@ -58,4 +55,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom" />
+
+    <RelativeLayout
+        android:id="@+id/rel_open_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_title"
+        android:background="@color/gray">
+
+        <ImageView
+            android:id="@+id/img_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/ic_open" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_open"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:text="点击任意位置打开视频"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
 </RelativeLayout>
