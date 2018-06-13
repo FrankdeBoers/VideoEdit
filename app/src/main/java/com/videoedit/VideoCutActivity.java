@@ -33,14 +33,14 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
 
     private MyVideoView vv_play;
     private String path;
-    private CutView cv_video;
+    private CutView mSizeCutView;
     private int windowWidth;
     private int windowHeight;
     private int dp50;
     private int videoWidth;
     private int videoHeight;
     private VideoBean videoBean;
-    private DurView mCutView;
+    private DurView mDurationView;
     private int startT, endT;
 
     private RelativeLayout rel_open_gallery;
@@ -88,11 +88,11 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
     private void initUI() {
 
         vv_play = (MyVideoView) findViewById(R.id.vv_play);
-        cv_video = (CutView) findViewById(R.id.cv_video);
+        mSizeCutView = (CutView) findViewById(R.id.cv_video);
         TextView open_gallery = (TextView) findViewById(R.id.open_gallery);
         TextView rl_finish = (TextView) findViewById(R.id.rl_finish);
-        mCutView = (DurView) findViewById(R.id.cut_view);
-        mCutView.setRangeChangeListener(this);
+        mDurationView = (DurView) findViewById(R.id.cut_view);
+        mDurationView.setRangeChangeListener(this);
         open_gallery.setOnClickListener(this);
         rl_finish.setOnClickListener(this);
 
@@ -145,13 +145,13 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
     private void editVideo() {
 
         //得到裁剪后的margin值
-        float[] cutArr = cv_video.getCutArr();
+        float[] cutArr = mSizeCutView.getCutArr();
         float left = cutArr[0];
         float top = cutArr[1];
         float right = cutArr[2];
         float bottom = cutArr[3];
-        int cutWidth = cv_video.getRectWidth();
-        int cutHeight = cv_video.getRectHeight();
+        int cutWidth = mSizeCutView.getRectWidth();
+        int cutHeight = mSizeCutView.getRectHeight();
 
         //计算宽高缩放比
         float leftPro = left / cutWidth;
@@ -171,6 +171,7 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "requestCode:" + requestCode);
+
         if (requestCode == CODE_REQUEST_VIDEO && resultCode == RESULT_OK) {
             path = getPathFromURI(data.getData());
             Log.d(TAG, path);
@@ -207,18 +208,24 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
             });
 
             vv_play.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                int isFirstMeasure = 0;
                 @Override
                 public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    float cbottom = windowHeight - vv_play.getBottom() - dp50;
-                    Log.d(TAG, "cbottom:" + cbottom);
-                    cv_video.setMargin(vv_play.getLeft(), vv_play.getTop(),
-                            windowWidth - vv_play.getRight(), windowHeight - vv_play.getBottom() - dp50);
+                    // 此处添加标志位，避免onLayoutChange 多次回调，致使手动调节裁剪框不生效
+                    // 同时，使用int自增，是因为第一次onLayoutChange 回调时，返回的值是0，非需要的视频尺寸大小
+                    if (isFirstMeasure <= 1) {
+                        mSizeCutView.setMargin(vv_play.getLeft(), vv_play.getTop(),
+                                windowWidth - vv_play.getRight(), windowHeight - vv_play.getBottom() - dp50);
+                    }
+                    isFirstMeasure++;
                 }
             });
-            mCutView.setMediaFileInfo(videoBean);
+
+            mDurationView.setMediaFileInfo(videoBean);
 
             rel_open_gallery.setVisibility(View.GONE);
         }
+
     }
 
     /*
