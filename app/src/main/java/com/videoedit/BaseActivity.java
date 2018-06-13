@@ -36,7 +36,7 @@ public abstract class BaseActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             pb_loading.setIndeterminateTintList(ContextCompat.getColorStateList(this, R.color.blue));
         }
-        tv_hint.setText("视频编译中 0");
+        tv_hint.setText("视频制作中 0%");
         progressDialog = builder.create();
         progressDialog.show();
 
@@ -44,7 +44,7 @@ public abstract class BaseActivity extends Activity {
     }
 
     public void setProgressDialog(int progress) {
-        tv_hint.setText("视频编译中 " + progress);
+        tv_hint.setText("视频制作中 " + progress + "%");
     }
 
     public void closeProgressDialog() {

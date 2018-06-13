@@ -40,7 +40,7 @@
             android:layout_height="66dp"
             seekbar:leftThumbDrawable="@drawable/ic_progress_left"
             seekbar:leftThumbIndex="0"
-            seekbar:lineColor="@color/colorAccent"
+            seekbar:lineColor="@color/white"
             seekbar:lineHeight="3dp"
             seekbar:rightThumbDrawable="@drawable/ic_progress_right"
             seekbar:thumbWidth="19dp"

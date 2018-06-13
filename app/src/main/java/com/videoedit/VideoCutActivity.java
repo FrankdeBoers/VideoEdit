@@ -44,6 +44,8 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
     private int startT, endT;
 
     private RelativeLayout rel_open_gallery;
+    private TextView rl_finish;
+    private TextView open_gallery;
 
     /**
      * 获取本地视频信息
@@ -89,8 +91,8 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
 
         vv_play = (MyVideoView) findViewById(R.id.vv_play);
         mSizeCutView = (CutView) findViewById(R.id.cv_video);
-        TextView open_gallery = (TextView) findViewById(R.id.open_gallery);
-        TextView rl_finish = (TextView) findViewById(R.id.rl_finish);
+        open_gallery = (TextView) findViewById(R.id.open_gallery);
+        rl_finish = (TextView) findViewById(R.id.rl_finish);
         mDurationView = (DurView) findViewById(R.id.cut_view);
         mDurationView.setRangeChangeListener(this);
         open_gallery.setOnClickListener(this);
@@ -209,6 +211,7 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
 
             vv_play.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 int isFirstMeasure = 0;
+
                 @Override
                 public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     // 此处添加标志位，避免onLayoutChange 多次回调，致使手动调节裁剪框不生效
@@ -224,6 +227,7 @@ public class VideoCutActivity extends BaseActivity implements View.OnClickListen
             mDurationView.setMediaFileInfo(videoBean);
 
             rel_open_gallery.setVisibility(View.GONE);
+            rl_finish.setVisibility(View.VISIBLE);
         }
 
     }
